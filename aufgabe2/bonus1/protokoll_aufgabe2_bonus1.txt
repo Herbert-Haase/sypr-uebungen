@@ -1,0 +1,26 @@
+
+└── ❯ time ./loop0 1000
+./loop0 1000  0,00s user 0,00s system 78% cpu 0,001 total
+┌  sypr-uebungen/aufgabe2/bonus1── main
+└── ❯ time ./loop0 10000
+./loop0 10000  0,00s user 0,00s system 82% cpu 0,001 total
+┌  sypr-uebungen/aufgabe2/bonus1── main
+└── ❯ time ./loop0 100000
+./loop0 100000  0,00s user 0,00s system 92% cpu 0,004 total
+└── ❯ time ./loop0 1000000000
+./loop0 1000000000  35,87s user 0,33s system 99% cpu 36,380 total
+
+└── ❯ time ./loop1 1000      
+./loop1 1000  0,00s user 0,00s system 79% cpu 0,001 total
+┌  sypr-uebungen/aufgabe2/bonus1── main
+└── ❯ time ./loop1 10000
+./loop1 10000  0,00s user 0,00s system 81% cpu 0,001 total
+┌  sypr-uebungen/aufgabe2/bonus1── main
+└── ❯ time ./loop1 100000
+./loop1 100000  0,00s user 0,00s system 92% cpu 0,003 total
+┌  sypr-uebungen/aufgabe2/bonus1── main
+└── ❯ time ./loop1 1000000000
+./loop1 1000000000  18,51s user 0,27s system 99% cpu 18,826 total
+
+loop0: 35,87
+loop1: 18,51 -> sequentieller Zugriff erlaubt schnelleren Zugriff durch das Cache

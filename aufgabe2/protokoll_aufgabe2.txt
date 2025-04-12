@@ -1,0 +1,84 @@
+Q: Verhält sich das C-Programm bei allen Eingaben wie das Java-Programm?
+A: Nein, bei viel zu großer Eingabe (>2^32) ignoriert java die Zahl, 
+während C die hinteren 8 bytes sich schnappt und das Feld mit -1 initialisiert.
+PS: Der C Zufallsgenerator gibt keine negativen Zahlen aus.
+
+Laufzeitmessung
+
+Q: Wächst die Ausführungszeit tatsächlich quadratisch mit der Array-Größe?
+1000
+└── ❯ /usr/bin/time ./bubblesort 1000 < /dev/null > /dev/null
+0.00user 0.00system 0:00.00elapsed 50%CPU (0avgtext+0avgdata 1536maxresident)k
+0inputs+0outputs (0major+80minor)pagefaults 0swaps
+└── ❯ /usr/bin/time java Bubblesort 1000 < /dev/null > /dev/null
+0.09user 0.02system 0:00.08elapsed 141%CPU (0avgtext+0avgdata 53636maxresident)k
+0inputs+0outputs (0major+4962minor)pagefaults 0swaps
+
+10.000
+└── ❯ /usr/bin/time ./bubblesort 10000 < /dev/null > /dev/null
+0.24user 0.00system 0:00.25elapsed 99%CPU (0avgtext+0avgdata 1716maxresident)k
+0inputs+0outputs (0major+89minor)pagefaults 0swaps
+└── ❯ /usr/bin/time java Bubblesort 10000 < /dev/null > /dev/null
+0.34user 0.02system 0:00.24elapsed 149%CPU (0avgtext+0avgdata 57672maxresident)k
+0inputs+0outputs (0major+6021minor)pagefaults 0swaps
+
+100.000
+└── ❯ /usr/bin/time ./bubblesort 100000 < /dev/null > /dev/null
+30.20user 0.00system 0:30.27elapsed 99%CPU (0avgtext+0avgdata 1812maxresident)k
+0inputs+0outputs (0major+176minor)pagefaults 0swaps
+└── ❯ /usr/bin/time java Bubblesort 100000 < /dev/null > /dev/null
+18.08user 0.12system 0:18.06elapsed 100%CPU (0avgtext+0avgdata 67928maxresident)k
+0inputs+0outputs (0major+6555minor)pagefaults 0swaps
+
+1000, 10.000, 100.000
+C: 0.00, 0.24, 30.20 -> wächst ca. quadratisch
+Java: 0.09, 0.34, 18.08 -> wächst langsamer, vermutlich wegen compiler optimierung
+
+
+└── ❯ make "CC=gcc -g -o2" clean all
+rm -f bubblesort bubblesort.o
+gcc -g -o2 -Wall -Wextra -Werror -Wvla -std=c11 -pedantic    bubblesort.c   -o bubblesort
+└── ❯ /usr/bin/time ./bubblesort 1000 < /dev/null > /dev/null 
+0.00user 0.00system 0:00.00elapsed 50%CPU (0avgtext+0avgdata 1588maxresident)k
+0inputs+0outputs (0major+80minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./bubblesort 10000 < /dev/null > /dev/null
+0.25user 0.00system 0:00.25elapsed 99%CPU (0avgtext+0avgdata 1724maxresident)k
+0inputs+0outputs (0major+88minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./bubblesort 100000 < /dev/null > /dev/null
+30.00user 0.00system 0:30.06elapsed 99%CPU (0avgtext+0avgdata 1792maxresident)k
+0inputs+0outputs (0major+176minor)pagefaults 0swaps
+
+1000, 10.000, 100.000
+C: 0.00, 0.25, 30.00 -> nicht erkennbar schneller
+
+└── ❯ make "CC=gcc -g -o1" clean all
+rm -f bubblesort bubblesort.o
+gcc -g -o1 -Wall -Wextra -Werror -Wvla -std=c11 -pedantic    bubblesort.c   -o bubblesort
+└── ❯ /usr/bin/time ./bubblesort 1000 < /dev/null > /dev/null 
+0.00user 0.00system 0:00.00elapsed 50%CPU (0avgtext+0avgdata 1612maxresident)k
+0inputs+0outputs (0major+82minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./bubblesort 10000 < /dev/null > /dev/null
+0.25user 0.00system 0:00.25elapsed 100%CPU (0avgtext+0avgdata 1604maxresident)k
+0inputs+0outputs (0major+87minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./bubblesort 100000 < /dev/null > /dev/null
+30.01user 0.00system 0:30.07elapsed 99%CPU (0avgtext+0avgdata 1952maxresident)k
+0inputs+0outputs (0major+181minor)pagefaults 0swaps
+
+1000, 10.000, 100.000
+C: 0.00, 0.25, 30.01 -> nicht erkennbar schneller
+
+
+└── ❯ cc -O3 -march=native -funroll-loops -o fast bubblesort.c                                                                                            
+└── ❯ /usr/bin/time ./fast 1000 < /dev/null > /dev/null 
+0.00user 0.00system 0:00.00elapsed 0%CPU (0avgtext+0avgdata 1588maxresident)k
+0inputs+0outputs (0major+79minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./fast 10000 < /dev/null > /dev/null
+0.04user 0.00system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 1740maxresident)k
+0inputs+0outputs (0major+89minor)pagefaults 0swaps
+└── ❯ /usr/bin/time ./fast 100000 < /dev/null > /dev/null
+14.30user 0.00system 0:14.34elapsed 99%CPU (0avgtext+0avgdata 1976maxresident)k
+0inputs+0outputs (0major+178minor)pagefaults 0swaps
+
+1000, 10.000, 100.000
+C: 0.00, 0.04, 14.30
+
