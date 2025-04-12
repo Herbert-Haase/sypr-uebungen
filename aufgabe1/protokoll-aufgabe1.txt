@@ -1,0 +1,86 @@
+┌  systemprog/sypr-uebungen/aufgabe1
+└── ❯ make
+gcc -g -fno-stack-protector -Wwrite-strings -Wall -Wextra -Werror -std=c11 -pedantic    aufgabe1.c   -o aufgabe1
+┌  systemprog/sypr-uebungen/aufgabe1
+└── ❯ make clean
+rm -f aufgabe1 aufgabe1.o
+┌  systemprog/sypr-uebungen/aufgabe1
+└── ❯ make cppcheck
+cppcheck --enable=warning,style --std=c11 aufgabe1.c
+Checking aufgabe1.c ...
+aufgabe1.c:137:24: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+  if (sizeof(int) == 4 && sizeof(long int) == 4 && sizeof(char *) == 4)
+                       ^
+aufgabe1.c:141:24: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+  if (sizeof(int) == 4 && sizeof(long int) == 4 && sizeof(long long int) == 8 &&
+                       ^
+┌  systemprog/sypr-uebungen/aufgabe1
+└── ❯   
+
+
+Q: Sind die Variablen in der Reihenfolge ihrer Definition im Hauptspeicher abgelegt?
+A: Nein, die Variablen sind so abgelegt, dass im Hauptspeicher möglichst wenig Lücken gespeichert werden.
+
+Q: Liegen die Variablen direkt hintereinander oder gibt es Lücken? Falls es Lücken gibt, wo liegen sie? Können Sie sich erklären, warum es eventuell Lücken gibt?
+A: Die Variablen liegen direkt hintereinander, außer die anderen Variablen passen nicht mehr in das Wort rein.
+
+Q: Wie viel Speicher belegen die Variablen insgesamt, also inklusive eventueller Lücken?
+A: 0x7fff14568d30 bis 0x7fff14568d9f -> 112 byte
+
+└── ❯ ./aufgabe1       
+Adresse: 0x7ffc27f9aacf Platzbedarf: 1 Alignment: 1 Typ: signed character Name: sch Wert: 1
+Adresse: 0x7ffc27f9aace Platzbedarf: 1 Alignment: 1 Typ: character Name: ch Wert: c
+Adresse: 0x7ffc27f9aacd Platzbedarf: 1 Alignment: 1 Typ: unsigned charcter Name: uch Wert: 10
+Adresse: 0x7ffc27f9aaca Platzbedarf: 2 Alignment: 2 Typ: Short Name: shrt Wert: 2
+Adresse: 0x7ffc27f9aac4 Platzbedarf: 4 Alignment: 4 Typ: integer Name: i Wert: 3
+Adresse: 0x7ffc27f9aab8 Platzbedarf: 8 Alignment: 8 Typ: long Integer Name: l Wert: 4
+Adresse: 0x7ffc27f9aab0 Platzbedarf: 8 Alignment: 8 Typ: long long Integer Name: ll Wert: 5
+Adresse: 0x7ffc27f9aaae Platzbedarf: 2 Alignment: 2 Typ: unsigned short Integer Name: ushort Wert: 7i
+Adresse: 0x7ffc27f9aaa8 Platzbedarf: 4 Alignment: 4 Typ: unsigned Integer Name: ui Wert: 8i
+Adresse: 0x7ffc27f9aaa0 Platzbedarf: 8 Alignment: 8 Typ: unsigned long Integer Name: ul Wert: 9
+Adresse: 0x7ffc27f9aa98 Platzbedarf: 8 Alignment: 8 Typ: unsigned long long Integer Name: ull Wert: 10
+Adresse: 0x7ffc27f9aa94 Platzbedarf: 4 Alignment: 4 Typ: float Name: f Wert: 11.000000
+Adresse: 0x7ffc27f9aa88 Platzbedarf: 8 Alignment: 8 Typ: double Name: d Wert: 12.000000
+Adresse: 0x7ffc27f9aa70 Platzbedarf: 16 Alignment: 16 Typ: long double Name: uld Wert: 13.000000
+Adresse: 0x7ffc27f9aa6f Platzbedarf: 1 Alignment: 1 Typ: boolean Name: ja Wert: true
+Adresse: 0x7ffc27f9aa60 Platzbedarf: 8 Alignment: 8 Typ: charcter pointer Name: s Wert: Hallo
+LP64
+
+└── ❯ ./aufgabe1 | sort        
+Adresse: 0x7fff60073ca0 Platzbedarf: 8 Alignment: 8 Typ: charcter pointer Name: s Wert: Hallo
+Adresse: 0x7fff60073caf Platzbedarf: 1 Alignment: 1 Typ: boolean Name: ja Wert: true
+Adresse: 0x7fff60073cb0 Platzbedarf: 16 Alignment: 16 Typ: long double Name: uld Wert: 13.000000
+Adresse: 0x7fff60073cc8 Platzbedarf: 8 Alignment: 8 Typ: double Name: d Wert: 12.000000
+Adresse: 0x7fff60073cd4 Platzbedarf: 4 Alignment: 4 Typ: float Name: f Wert: 11.000000
+Adresse: 0x7fff60073cd8 Platzbedarf: 8 Alignment: 8 Typ: unsigned long long Integer Name: ull Wert: 10
+Adresse: 0x7fff60073ce0 Platzbedarf: 8 Alignment: 8 Typ: unsigned long Integer Name: ul Wert: 9
+Adresse: 0x7fff60073ce8 Platzbedarf: 4 Alignment: 4 Typ: unsigned Integer Name: ui Wert: 8i
+Adresse: 0x7fff60073cee Platzbedarf: 2 Alignment: 2 Typ: unsigned short Integer Name: ushort Wert: 7i
+Adresse: 0x7fff60073cf0 Platzbedarf: 8 Alignment: 8 Typ: long long Integer Name: ll Wert: 5
+Adresse: 0x7fff60073cf8 Platzbedarf: 8 Alignment: 8 Typ: long Integer Name: l Wert: 4
+Adresse: 0x7fff60073d04 Platzbedarf: 4 Alignment: 4 Typ: integer Name: i Wert: 3
+Adresse: 0x7fff60073d0a Platzbedarf: 2 Alignment: 2 Typ: Short Name: shrt Wert: 2
+Adresse: 0x7fff60073d0d Platzbedarf: 1 Alignment: 1 Typ: unsigned charcter Name: uch Wert: 10
+Adresse: 0x7fff60073d0e Platzbedarf: 1 Alignment: 1 Typ: character Name: ch Wert: c
+Adresse: 0x7fff60073d0f Platzbedarf: 1 Alignment: 1 Typ: signed character Name: sch Wert: 1
+LP64
+
+└── ❯ ./aufgabe1 | sort -r     
+LP64
+Adresse: 0x7ffece605a3f Platzbedarf: 1 Alignment: 1 Typ: signed character Name: sch Wert: 1
+Adresse: 0x7ffece605a3e Platzbedarf: 1 Alignment: 1 Typ: character Name: ch Wert: c
+Adresse: 0x7ffece605a3d Platzbedarf: 1 Alignment: 1 Typ: unsigned charcter Name: uch Wert: 10
+Adresse: 0x7ffece605a3a Platzbedarf: 2 Alignment: 2 Typ: Short Name: shrt Wert: 2
+Adresse: 0x7ffece605a34 Platzbedarf: 4 Alignment: 4 Typ: integer Name: i Wert: 3
+Adresse: 0x7ffece605a28 Platzbedarf: 8 Alignment: 8 Typ: long Integer Name: l Wert: 4
+Adresse: 0x7ffece605a20 Platzbedarf: 8 Alignment: 8 Typ: long long Integer Name: ll Wert: 5
+Adresse: 0x7ffece605a1e Platzbedarf: 2 Alignment: 2 Typ: unsigned short Integer Name: ushort Wert: 7i
+Adresse: 0x7ffece605a18 Platzbedarf: 4 Alignment: 4 Typ: unsigned Integer Name: ui Wert: 8i
+Adresse: 0x7ffece605a10 Platzbedarf: 8 Alignment: 8 Typ: unsigned long Integer Name: ul Wert: 9
+Adresse: 0x7ffece605a08 Platzbedarf: 8 Alignment: 8 Typ: unsigned long long Integer Name: ull Wert: 10
+Adresse: 0x7ffece605a04 Platzbedarf: 4 Alignment: 4 Typ: float Name: f Wert: 11.000000
+Adresse: 0x7ffece6059f8 Platzbedarf: 8 Alignment: 8 Typ: double Name: d Wert: 12.000000
+Adresse: 0x7ffece6059e0 Platzbedarf: 16 Alignment: 16 Typ: long double Name: uld Wert: 13.000000
+Adresse: 0x7ffece6059df Platzbedarf: 1 Alignment: 1 Typ: boolean Name: ja Wert: true
+Adresse: 0x7ffece6059d0 Platzbedarf: 8 Alignment: 8 Typ: charcter pointer Name: s Wert: Hallo
+
