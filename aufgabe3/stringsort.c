@@ -4,13 +4,15 @@
 #include <string.h>
 #include <time.h>
 
-#define NUM_LEN 2000
+#define NUM_LEN 20
 
 void bubblesort(int n, int m, char *a);
 
 int main(int argc, const char *argv[]) {
   if (argc != 2) {
     printf("Aufruf: %s Anzahl\n", argv[0]);
+    printf("Anzahl muss mindestens 1 sein\n");
+
     return EXIT_FAILURE;
   }
   int n = atoi(argv[1]);
@@ -25,10 +27,10 @@ int main(int argc, const char *argv[]) {
   }
   srand(time(NULL));
 
-  puts("Unsortiertes Feld:");
+  puts("Unsortierte Array:");
 
   int str_amount = 0;
-  for (char i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     int r = rand() % 10;
     str_amount += sprintf(*(a + i), "%d", r);
     printf("%s ", *(a + i));
@@ -36,13 +38,17 @@ int main(int argc, const char *argv[]) {
   puts("\nSorted");
   bubblesort(n, NUM_LEN, &a[0][0]);
 
-  char* strbuilder = malloc(sizeof(str_amount));
+  char *strbuilder = malloc(2 * str_amount * sizeof(char) + 1);
+  if (!strbuilder) {
+    fprintf(stderr, "out of memory");
+    exit(1);
+  }
   strcpy(strbuilder, *a);
-  for (char i = 1; i < n; ++i) {
-      strcat(strbuilder, " ");
+  for (int i = 1; i < n; ++i) {
     if (!strcmp(*(a + i - 1), *(a + i))) {
       strcat(strbuilder, "*");
     } else {
+      strcat(strbuilder, " ");
       strcat(strbuilder, *(a + i));
     }
   }
