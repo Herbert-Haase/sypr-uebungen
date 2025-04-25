@@ -33,6 +33,7 @@ Q: Wächst die Ausführungszeit tatsächlich quadratisch mit der Array-Größe?
 1000, 10.000, 100.000
 C: 0.00, 0.24, 30.20 -> wächst ca. quadratisch
 Java: 0.09, 0.34, 18.08 -> wächst langsamer, vermutlich wegen compiler optimierung
+Warum ist 0avgtext+0avgdata immer 0?
 
 
 └── ❯ make "CC=gcc -g -o2" clean all
