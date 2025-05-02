@@ -19,7 +19,7 @@ int main(int argc, const char *argv[]) {
     printf("Anzahl muss mindestens 1 sein\n");
     return EXIT_FAILURE;
   }
-  char **a = malloc(n * sizeof(char*));
+  char **a = malloc(n * sizeof(char *));
   if (!a) {
     fprintf(stderr, "out of memory");
     exit(1);
@@ -30,7 +30,7 @@ int main(int argc, const char *argv[]) {
 
   int str_amount = 0;
   for (int i = 0; i < n; ++i) {
-    a[i] = malloc(m * sizeof(char));
+    *(a + i) = malloc(m * sizeof(char));
     if (!a[i]) {
       fprintf(stderr, "out of memory");
       exit(1);
@@ -55,7 +55,9 @@ int main(int argc, const char *argv[]) {
       strcat(strbuilder, " ");
       strcat(strbuilder, a[i]);
     }
+    free(a[i-1]);
   }
+  free(a[n-1]);
   printf("%s\n", strbuilder);
   free(strbuilder);
   free(a);
