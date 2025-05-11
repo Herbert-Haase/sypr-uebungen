@@ -1,18 +1,31 @@
+#
 # Makefile
-CC=gcc
-CFLAGS = -g -Wall -Wextra -Werror -std=c11 -pedantic
+#
+# Autor: H.Drachenfels
+# Erstellt am: 14.9.2023
+#
 
-# Compile all C source files into individual executables
-all: $(patsubst %.c, %, $(wildcard *.c))
+CC = gcc -g
+CPPFLAGS =  -D_POSIX_C_SOURCE=200112L
+CFLAGS = -Wall -Wextra -Werror -std=$(STD) -pedantic
+CPPCHECK = cppcheck --enable=warning,style --std=$(STD)
+STD = c11
 
-# Rule to create the executable from the object file
-%: %.o
-	$(CC) $(CFLAGS) -o $@ $^
+TARGET = listfiles
+OBJECTS = fileinfo.o
 
-# Rule to create the object file from the C source file
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+.PHONY: all clean cppcheck
 
-# Clean up the compiled files
+all: $(TARGET)
+
 clean:
-	rm -f $(patsubst %.c, %, $(wildcard *.c)) *.o
+	rm -f $(TARGET) $(TARGET).o $(OBJECTS)
+
+cppcheck: $(TARGET).c $(OBJECTS:.o=.c)
+	$(CPPCHECK) $^
+
+$(TARGET): $(TARGET).o $(OBJECTS)
+	$(CC) $(LDFLAGS) $^ -o $@
+
+listfiles.o: listfiles.c fileinfo.h
+fileinfo.o: fileinfo.c fileinfo.h
