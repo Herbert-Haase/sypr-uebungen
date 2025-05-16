@@ -10,76 +10,58 @@
 
 #include "fileinfo.h"
 
+#include <errno.h> // errno
 #include <stdio.h>
-#include <errno.h>  // errno
 #include <string.h> // strerror
 
-int main(int argc, char *argv[])
-{
-    fileinfo *head = NULL;
+int main(int argc, char *argv[]) {
+  fileinfo *head = NULL;
 
-    if (argc == 1)
-    {
-        head = fileinfo_create(".");
-        if (!head)
-        {
-            fprintf(stderr, "%s (errno %d)\n", strerror(errno), errno);
-            return 1;
-        }
+  if (argc == 1) {
+    head = fileinfo_create(".");
+    if (!head) {
+      fprintf(stderr, "%s (errno %d)\n", strerror(errno), errno);
+      return 1;
     }
-    else
-    {
-        fileinfo *files = NULL;
-        fileinfo *dirs = NULL;
-        for (int i = argc - 1; i > 0; --i)
-        {
-            fileinfo *f = fileinfo_create(argv[i]);
-            if (!f)
-            {
-                fprintf(stderr, "%s: %s (errno %d)\n",
-                        argv[i], strerror(errno), errno);
-                continue;
-            }
+  } else {
+    fileinfo *files = NULL;
+    fileinfo *dirs = NULL;
+    for (int i = argc - 1; i > 0; --i) {
+      fileinfo *f = fileinfo_create(argv[i]);
+      if (!f) {
+        fprintf(stderr, "%s: %s (errno %d)\n", argv[i], strerror(errno), errno);
+        continue;
+      }
 
-            if (f->type == filetype_directory)
-            {
-                f->next = dirs;
-                dirs = f;
-            }
-            else
-            {
-                f->next = files;
-                files = f;
-            }
-        }
-
-        if (!files)
-        {
-            head = dirs;
-        }
-        else
-        {
-            head = files;
-
-            while (files->next)
-            {
-                files = files->next;
-            }
-
-            files->next = dirs;
-        }
+      if (f->type == filetype_directory) {
+        f->next = dirs;
+        dirs = f;
+      } else {
+        f->next = files;
+        files = f;
+      }
     }
 
-    for (fileinfo *f = head; f; f = f->next)
-    {
-        fileinfo_print(f);
-    }
+    if (!files) {
+      head = dirs;
+    } else {
+      head = files;
 
-    while (head)
-    {
-        fileinfo *next = head->next;
-        fileinfo_destroy(head);
-        head = next;
+      while (files->next) {
+        files = files->next;
+      }
+
+      files->next = dirs;
     }
+  }
+
+  for (fileinfo *f = head; f; f = f->next) {
+    fileinfo_print(f);
+  }
+
+  while (head) {
+    fileinfo *next = head->next;
+    fileinfo_destroy(head);
+    head = next;
+  }
 }
-

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-void bubblesort(int n, int m, char **a);
+void bubblesort(int n, char **a);
 
 int main(int argc, const char *argv[]) {
   if (argc != 2) {
@@ -40,9 +40,8 @@ int main(int argc, const char *argv[]) {
     printf("%s ", a[i]);
   }
   puts("\nSorted");
-  bubblesort(n, m, (char **)a);
-
-  char *strbuilder = malloc(2 * str_amount * sizeof(char) + 1);
+  bubblesort(n, (char **)a);
+  char *strbuilder = malloc(str_amount * sizeof(char) + n);
   if (!strbuilder) {
     fprintf(stderr, "out of memory");
     exit(1);
@@ -63,18 +62,16 @@ int main(int argc, const char *argv[]) {
   free(a);
 }
 
-void bubblesort(int n, int m, char **a) {
-  char *tmp = malloc(m * sizeof(char));
+void bubblesort(int n, char **a) {
   for (int i = n; i > 1; --i) {
     for (int j = 0; j < i - 1; ++j) {
-      char *str1 = a[j];
-      char *str2 = a[j + 1];
+      const char *str1 = a[j];
+      const char *str2 = a[j + 1];
       if (strcmp(str1, str2) > 0) {
-        strcpy(tmp, str2);
-        strcpy(str2, str1);
-        strcpy(str1, tmp);
+        char *tmp = a[j + 1];
+        a[j + 1] = a[j];
+        a[j] = tmp;
       }
     }
   }
-  free(tmp);
 }

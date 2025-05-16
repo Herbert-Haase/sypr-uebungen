@@ -4,8 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-// int mystrcmp(const void *v1, const void *v2);
-void bubblesort(void *a, int n, int m, int (*cmp)(const char *, const char *));
+void bubblesort(void *a, int n, int m, int (*cmp)(const void *, const void *));
 
 int main(int argc, const char *argv[]) {
   if (argc != 2) {
@@ -15,7 +14,7 @@ int main(int argc, const char *argv[]) {
   }
 
   int n = atoi(argv[1]);
-  int m = strlen(argv[1]) + 2;
+  int m = strlen(argv[1]) + 1;
   if (n < 1) {
     printf("Anzahl muss mindestens 1 sein\n");
     return EXIT_FAILURE;
@@ -33,11 +32,12 @@ int main(int argc, const char *argv[]) {
   for (int i = 0; i < n; ++i) {
     int r = rand() % n;
     char *pos = a + i * m;
-    snprintf(pos, m, "%*d", m - 1, r);
+    snprintf(pos, m, "%d", r);
     printf("%s ", pos);
   }
   puts("\nSorted");
-  bubblesort((void *)a, n, m, strcmp);
+  typedef int (*cmp)(const void*, const void*);
+  bubblesort((void *)a, n, m, (cmp) strcmp);
 
   char *strbuilder = malloc(n * m * sizeof(char));
   if (!strbuilder) {
@@ -50,6 +50,7 @@ int main(int argc, const char *argv[]) {
     if (!strncmp(a + (i - 1) * m, a + i * m, m)) {
       strcat(strbuilder, "*");
     } else {
+      strcat(strbuilder, " ");
       strncat(strbuilder, a + i * m, m);
     }
   }
@@ -58,13 +59,14 @@ int main(int argc, const char *argv[]) {
   free(a);
 }
 
-void bubblesort(void *a, int n, int m, int (*cmp)(const char *, const char *)) {
+void bubblesort(void *a, int n, int m, int (*cmp)(const void *, const void *)) {
   void *tmp = malloc(m * sizeof(char));
+  if(!tmp) exit(EXIT_FAILURE);
   for (int i = n; i > 1; --i) {
     for (int j = 0; j < i - 1; ++j) {
-      void *str1 = (char *)a + j * m;
-      void *str2 = (char *)a + (j + 1) * m;
-      if (cmp((char *)str1, (char *)str2) > 0) {
+      void *str1 = ((char *)a) + j * m;
+      void *str2 = ((char *)a) + (j + 1) * m;
+      if (cmp(str1, str2) > 0) {
         memcpy(tmp, str2, m);
         memcpy(str2, str1, m);
         memcpy(str1, tmp, m);

@@ -13,12 +13,13 @@ enum filetype {
 };
 
 typedef struct fileinfo {
-  enum filetype f_type;
+  enum filetype type;
   union {
     size_t filetype_regular;
     struct fileinfo *filetype_directory;
   };
   char dateiname[NAME_MAX + 1];
+  struct fileinfo *next;
 } fileinfo;
 
 fileinfo *fileinfo_create(const char *filename);

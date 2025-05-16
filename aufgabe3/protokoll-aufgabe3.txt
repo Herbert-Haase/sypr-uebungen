@@ -109,9 +109,11 @@ Sorted
 ==15735== For lists of detected and suppressed errors, rerun with: -s
 ==15735== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
-└── ❯ time ./stringsort 20000 > /dev/null 
-./stringsort 20000 > /dev/null  0,87s user 0,00s system 99% cpu 0,874 total
+
+# neue version:
+└── ❯ time ./stringsort 20000 > /dev/null
+./stringsort 20000 > /dev/null  2,43s user 0,00s system 99% cpu 2,433 total
 ┌  sypr-uebungen/aufgabe3── main
 └── ❯ time ./stringsort-optimiert 20000 > /dev/null 
-./stringsort-optimiert 20000 > /dev/null  2,70s user 0,00s system 99% cpu 2,704 total
+./stringsort-optimiert 20000 > /dev/null  3,28s user 0,00s system 99% cpu 3,285 total
 
