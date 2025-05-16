@@ -4,6 +4,14 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <errno.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 extern int errno;
 enum filetype {
@@ -23,5 +31,6 @@ typedef struct fileinfo {
 } fileinfo;
 
 fileinfo *fileinfo_create(const char *filename);
+void fileinfo_print(const fileinfo *fi);
 
 #endif
