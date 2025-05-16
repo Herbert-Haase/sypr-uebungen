@@ -32,5 +32,6 @@ typedef struct fileinfo {
 
 fileinfo *fileinfo_create(const char *filename);
 void fileinfo_print(const fileinfo *fi);
+void fileinfo_destroy(fileinfo *fi);
 
 #endif

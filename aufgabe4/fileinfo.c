@@ -7,6 +7,7 @@ static void print_regular(const char *dateiname, const size_t groesse);
 static void print_directory(const char *pfad, const char *dateiname,
                             const fileinfo *fi);
 static void print_other(const char *dateiname);
+void fileinfo_destroy(fileinfo *fi);
 
 fileinfo *fileinfo_create(const char *filename) {
   errno = 0;
@@ -91,4 +92,16 @@ static void print_directory(const char *pfad, const char *dateiname,
 
 static void print_other(const char *dateiname) {
   printf("%s (other)\n", dateiname);
+}
+
+
+void fileinfo_destroy(fileinfo *fi){
+  if(fi->type == filetype_directory) {
+    fileinfo_destroy(fi->filetype_directory);
+  }
+  while(fi) {
+    fileinfo *next = fi->next;
+    free(fi);
+    fi = next;
+  }
 }
