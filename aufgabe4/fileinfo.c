@@ -59,6 +59,8 @@ static void list_directory(const char *filename, fileinfo *cd) {
   while ((e = readdir(d)) != NULL) {
     //  printf("%s/%s\n", filename, e->d_name);
     cd->next = fileinfo_create(e->d_name);
+    cd = cd->next;
+    
   }
   if (errno) {
     perror(filename);
